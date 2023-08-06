@@ -1,0 +1,26 @@
+.listContact {
+  margin: 0;
+  padding: 0;
+}
+
+.itemContact {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 16px;
+  margin-bottom: 8px;
+}
+.contact {
+  margin: 0;
+  max-width: 250px;
+  height: 100%;
+}
+
+.button {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4d5ae5;
+  color: #fff;
+}
