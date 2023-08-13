@@ -11,22 +11,35 @@ export class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   addContact = ({ name, number }) => {
     const id = nanoid(4);
 
-    this.setState(prevState => {
-      if (
-        this.state.contacts.find(
-          contact => contact.name.toLowerCase() === name.toLowerCase()
-        )
-      ) {
-        alert(`${name} is already to contacts`);
-        return;
-      }
-      return {
-        contacts: [...prevState.contacts, { id: id, name, number }],
-      };
-    });
+    if (
+      this.state.contacts.find(
+        contact => contact.name.toLowerCase() === name.toLowerCase()
+      )
+    ) {
+      alert(`${name} is already to contacts`);
+      return;
+    }
+
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, { id: id, name, number }],
+    }));
   };
 
   deleteContact = contactId => {
@@ -49,20 +62,6 @@ export class App extends Component {
         contact.number.includes(normalizedFilter)
     );
   };
-
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     return (
